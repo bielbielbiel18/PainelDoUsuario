@@ -207,10 +207,7 @@
             <div class="tutorial-section">
                 <h1>Tutorial</h1>
                 <p>Assista ao vídeo abaixo para aprender como utilizar a plataforma:</p>
-                <video width="100%" height="auto" controls>
-                    <source src="https://youtu.be/625CLIT5TnI" type="video/mp4">
-                    Seu navegador não suporta a exibição de vídeos.
-                </video>
+                <iframe width="100%" height="auto" src="https://www.youtube.com/embed/625CLIT5TnI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
 
             <!-- Seção de Quiz -->
@@ -242,10 +239,10 @@
             if (/^\d{6}-GT[1-3]$/.test(ticketCode)) {
                 gate = ticketCode.split('-')[1];
                 var mapUrl = "https://www.google.com.br/maps/@-23.9122999,-46.3130714,1202m/data=!3m1!1e3!5m2!1e1!1e4?entry=ttu&g_ep=EgoyMDI0MTAyMC4xIKXMDSoASAFQAw%3D%3D";
-                window.open(mapUrl);
-                message.textContent = "Redirecionando para o mapa do " + gate;
+                message.innerHTML = "Direcionando para o " + gate + "...";
+                window.open(mapUrl, '_blank');
             } else {
-                message.textContent = "Código do ticket inválido! Use o formato: 123456-GT1";
+                message.innerHTML = "Por favor, insira um código de ticket válido (ex: 123456-GT1).";
             }
         }
 
@@ -253,25 +250,28 @@
         function startWebcam() {
             var video = document.getElementById('video');
             var verificationMessage = document.getElementById('verificationMessage');
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
-                    video.srcObject = stream;
-                    video.style.display = 'block'; // Mostra o vídeo da webcam
-                    verificationMessage.style.display = 'block'; // Mostra a mensagem de verificação
-                });
+
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        video.srcObject = stream;
+                        video.style.display = 'block'; // Exibe o vídeo
+                        verificationMessage.style.display = 'block'; // Exibe a mensagem de verificação
+                    })
+                    .catch(function (error) {
+                        console.error("Erro ao acessar a câmera: " + error);
+                    });
             }
         }
 
-        // Função para exibir a mensagem de boas-vindas
-        function showWelcomeMessage() {
-            var welcomeMessage = document.getElementById('welcomeMessage');
-            setTimeout(function () {
-                welcomeMessage.style.display = 'none';
-            }, 3000);
-        }
+        // Mensagem de boas-vindas com o nome do usuário
+        var welcomeMessage = document.getElementById('welcomeMessage');
+        var userName = "Nome do Usuário"; // Substitua pelo nome real do usuário
+        document.getElementById('welcomeUserName').innerText = userName;
 
-        // Chama a função para exibir a mensagem de boas-vindas ao carregar a página
-        window.onload = showWelcomeMessage;
+        setTimeout(function () {
+            welcomeMessage.style.display = 'none';
+        }, 3000); // Oculta a mensagem após 3 segundos
     </script>
 </body>
 
