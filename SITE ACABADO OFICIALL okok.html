@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Painel do Usuário</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2e6f2;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #FF69B4;
+            padding: 15px 30px;
+            color: white;
+        }
+
+        .hamburger {
+            font-size: 1.5rem;
+            margin: 0;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #ffffff;
+            min-width: 150px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f2f2f2;
+        }
+
+        .user-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .user-icon img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .welcome-message {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .content {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilos para as seções */
+        .sections-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .qr-section,
+        .tutorial-section,
+        .quiz-section {
+            margin: 0 10px;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .qr-section h1,
+        .tutorial-section h1,
+        .quiz-section h1 {
+            font-size: 1.5rem;
+        }
+
+        .qr-section p,
+        .tutorial-section p,
+        .quiz-section p {
+            margin: 10px 0;
+        }
+
+        .code-input {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .code-input input {
+            padding: 10px;
+            border: 2px solid #FF69B4;
+            border-radius: 5px;
+            width: 180px;
+            margin-right: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .code-input input:focus {
+            outline: none;
+            border-color: #ff1493;
+        }
+
+        .code-input button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #FF69B4;
+            color: #ffffff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .code-input button:hover {
+            background-color: #ff1493;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        /* Estilos para a seção de verificação */
+        .verification-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        #video {
+            width: 100%;
+            max-width: 400px; /* Ajusta a largura do vídeo da webcam */
+            border: 2px solid #FF69B4;
+            border-radius: 10px;
+            display: none; /* Inicialmente oculto */
+        }
+
+        #verificationMessage {
+            display: none; /* Inicialmente oculto */
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        /* Novo estilo para o botão "Iniciar Webcam" */
+        .start-webcam-button {
+            background-color: #FF69B4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1rem;
+            margin-top: 10px; /* Espaçamento acima do botão */
+        }
+
+        .start-webcam-button:hover {
+            background-color: #ff1493;
+        }
+
+        /* Estilo do botão do formulário */
+        .form-button {
+            background-color: #FF69B4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1rem;
+            margin-top: 10px; /* Espaçamento acima do botão */
+        }
+
+        .form-button:hover {
+            background-color: #ff1493;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 class="hamburger" id="hamburger">Painel do Usuário</h1>
+        <div class="user-icon" id="userIcon">
+            <img src="img/user-icon.png" alt="User Icon" id="userImg">
+            <span id="userName">Seu Nome</span>
+            <div class="dropdown-content" id="dropdown">
+                <a href="#">Perfil</a>
+                <a href="#">Configurações</a>
+                <a href="#">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="welcome-message" id="welcomeMessage">
+        <p>Bem-vindo, <span id="welcomeUserName">usuário</span>!</p>
+    </div>
+
+    <div class="content">
+        <p>LogiPort: Sua rota segura e eficiente!</p>
+
+        <div class="sections-container">
+            <!-- Widget do QR Code -->
+            <div class="qr-section">
+                <h1>Direcionamento para Gate</h1>
+                <p>Insira o número do seu ticket abaixo para ser direcionado ao seu gate:</p>
+                <div class="code-input">
+                    <input type="text" id="ticketCode" placeholder="Ex: 123456-GT1">
+                    <button onclick="redirectToGate()">Ver Mapa</button>
+                </div>
+                <div id="message"></div>
+            </div>
+
+            <!-- Seção de Tutorial -->
+            <div class="tutorial-section">
+                <h1>Tutorial</h1>
+                <p>Assista ao vídeo abaixo para aprender como utilizar a plataforma:</p>
+                <video width="100%" height="auto" controls>
+                    <source src="path/to/tutorial-video.mp4" type="video/mp4">
+                    Seu navegador não suporta a exibição de vídeos.
+                </video>
+            </div>
+
+            <!-- Seção de Quiz -->
+            <div class="quiz-section">
+                <h1>Formulário</h1>
+                <p>Preencha o formulário de integração para tornar-se um motorista verificado.</p>
+                <button class="form-button" onclick="window.open('https://forms.office.com/r/5zGRiZrE3J')">Formulário</button>
+                <p>Aperte o botão acima para acessar o formulário.</p>
+            </div>
+        </div>
+
+        <!-- Seção de Verificação -->
+        <div class="verification-section">
+            <h2>Verificação de Motorista</h2>
+            <p>Ative a sua webcam para verificação:</p>
+            <video id="video" autoplay></video>
+            <button class="start-webcam-button" onclick="startWebcam()">Iniciar Webcam</button>
+            <p id="verificationMessage">Você está verificado!</p>
+        </div>
+    </div>
+
+    <script>
+        // Função para redirecionar para o Google Maps
+        function redirectToGate() {
+            var ticketCode = document.getElementById('ticketCode').value;
+            var message = document.getElementById('message');
+            var gate;
+
+            if (/^\d{6}-GT[1-3]$/.test(ticketCode)) {
+                gate = ticketCode.split('-')[1];
+                var mapUrl = "https://www.google.com.br/maps/@-23.9122999,-46.3130714,1202m/data=!3m1!1e3!5m2!1e1!1e4?entry=ttu&g_ep=EgoyMDI0MTAyMC4xIKXMDSoASAFQAw%3D%3D";
+                window.open(mapUrl);
+                message.textContent = "Redirecionando para o mapa do " + gate;
+            } else {
+                message.textContent = "Código do ticket inválido! Use o formato: 123456-GT1";
+            }
+        }
+
+        // Função para iniciar a webcam
+        function startWebcam() {
+            var video = document.getElementById('video');
+            var verificationMessage = document.getElementById('verificationMessage');
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+                    video.srcObject = stream;
+                    video.style.display = 'block'; // Mostra o vídeo da webcam
+                    verificationMessage.style.display = 'block'; // Mostra a mensagem de verificação
+                }).catch(function (error) {
+                    console.error("Erro ao acessar a webcam: ", error);
+                });
+            }
+        }
+
+        // Função para mostrar a mensagem de boas-vindas
+        window.onload = function () {
+            var welcomeMessage = document.getElementById('welcomeMessage');
+            var userName = document.getElementById('userName');
+            var welcomeUserName = document.getElementById('welcomeUserName');
+
+            // Simular login do usuário
+            userName.textContent = "Nome do Usuário"; // Substitua pelo nome real do usuário
+            welcomeUserName.textContent = "Nome do Usuário"; // Substitua pelo nome real do usuário
+
+            welcomeMessage.style.display = 'block';
+            setTimeout(function () {
+                welcomeMessage.style.display = 'none';
+            }, 3000); // Oculta após 3 segundos
+        };
+
+        // Lógica para mostrar/ocultar o menu dropdown do usuário
+        document.getElementById('userImg').addEventListener('click', function () {
+            var dropdown = document.getElementById('dropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Ocultar o dropdown se clicar fora
+        window.onclick = function (event) {
+            if (!event.target.matches('.user-icon img')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>
