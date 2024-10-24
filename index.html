@@ -272,7 +272,7 @@
 
             <!-- Seção de Quiz -->
             <div class="quiz-section">
-                <h1>Formulário</h1>
+                <h1>Integração do Motorista</h1>
                 <p>Preencha o formulário de integração para tornar-se um motorista verificado.</p>
                 <button class="form-button" onclick="window.open('https://forms.office.com/r/5zGRiZrE3J')">Formulário</button>
                 <p>Aperte o botão acima para acessar o formulário.</p>
@@ -281,7 +281,7 @@
 
         <!-- Seção de Verificação -->
         <div class="verification-section">
-            <h1>Scan Fácil</h1>
+            <h1>Reconhecimento Facil</h1>
             <button class="start-webcam-button" id="startWebcamButton">Iniciar Webcam</button>
             <video id="video" autoplay></video>
             <div id="verificationMessage">Você está verificado!</div>
@@ -292,35 +292,15 @@
         // Exemplo de funcionalidade de redirecionamento para o gate
         function redirectToGate() {
             const code = document.getElementById('ticketCode').value;
-            const messageDiv = document.getElementById('message');
-
-            if (code.includes('GT1')) {
-                window.location.href = 'https://www.google.com.br/maps/@-23.9122999,-46.3130714,1202m/data=!3m1!1e3!5m2!1e1!1e4?entry=ttu&g_ep=EgoyMDI0MTAyMC4xIKXMDSoASAFQAw%3D%3D';
-            } else if (code.includes('GT2')) {
-                // Redireciona para o mapa do Gate 2
-            } else if (code.includes('GT3')) {
-                // Redireciona para o mapa do Gate 3
+            if (code) {
+                const gate = code.split('-')[1]; // Obtém o gate do código
+                const message = document.getElementById('message');
+                message.textContent = `Redirecionando para o Gate ${gate}...`;
+                window.open("https://www.google.com.br/maps/@-23.9122999,-46.3130714,1202m/data=!3m1!1e3!5m2!1e1!1e4?entry=ttu&g_ep=EgoyMDI0MTAyMC4xIKXMDSoASAFQAw%3D%3D", "_blank");
             } else {
-                messageDiv.innerText = 'Código de ticket inválido. Tente novamente.';
+                alert("Por favor, insira um código de ticket válido.");
             }
         }
-
-        // Função para iniciar a webcam
-        const startWebcamButton = document.getElementById('startWebcamButton');
-        const video = document.getElementById('video');
-        const verificationMessage = document.getElementById('verificationMessage');
-
-        startWebcamButton.addEventListener('click', () => {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => {
-                    video.srcObject = stream;
-                    video.style.display = 'block';
-                    verificationMessage.style.display = 'block';
-                })
-                .catch(err => {
-                    alert('Não foi possível acessar a webcam. Erro: ' + err);
-                });
-        });
 
         // Função para remover a mensagem de boas-vindas após 3 segundos
         const welcomeMessage = document.getElementById('welcomeMessage');
@@ -331,9 +311,25 @@
         }, 3000);
 
         // Simulação de nome de usuário (baseado no login)
-        const userEmail = 'exemplo@dominio.com'; // Substitua isso com o email real do login
-        const userName = userEmail.split('@')[0]; // Extrai o nome de usuário do email
-        welcomeUserName.textContent = userName;
+        const userName = 'usuário'; // Altere aqui para o nome desejado
+        welcomeUserName.textContent = userName; // Exibe "Bem-vindo, usuário!"
+
+        // Acessar a webcam
+        const startWebcamButton = document.getElementById('startWebcamButton');
+        const video = document.getElementById('video');
+        const verificationMessage = document.getElementById('verificationMessage');
+
+        startWebcamButton.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                video.style.display = 'block'; // Exibe o vídeo
+                verificationMessage.style.display = 'block'; // Exibe a mensagem
+            } catch (error) {
+                console.error('Erro ao acessar a webcam:', error);
+                alert('Não foi possível acessar a webcam. Verifique suas permissões.');
+            }
+        });
     </script>
 </body>
 
